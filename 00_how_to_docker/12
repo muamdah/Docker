@@ -1,0 +1,10 @@
+# Lancer un container mysql
+#
+# -d			tâche de fond
+# -e			définie une varible d'environnement
+# -v			crée un point de montage entre le container et un volume de docker
+# --mount		crée un point de montage entre le container et un volume de docker
+# --restart		'on-failure' restart le container a chaque fois qu'il quitte sur une erreur
+#
+docker run -d -e MYSQL_ROOT_PASSWORD=Kerrigan -e MYSQL_DATABASE=zerglings --restart=on-failure --mount type=volume,source=hatchery,target=/var/lib/mysql --name=spawning-pool mysql
+

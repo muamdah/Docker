@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Abathur est un container Python en version 2-slim, qui aura son dossier /root bindé à un dossier du HOME de votre host, ainsi que le port 3000 bindé au port 3000
+docker run --name=Abathur -v=/Users/muamdah/Abathur:/root -p=3000:3000 -id python:2-slim
+
+# Installer le microframework Flask derniere maj
+docker exec Abathur pip install Flask
+
+#Utiliser Flask pour creer une page html renvoyant Hello World
+docker exec Abathur bash -c 'echo "from flask import Flask
+app = Flask(__name__)
+@app.route(\"/\")
+def index():
+    return \"<h1>Hello World</h1>\"" > /root/hello.py'
+
+#lancer un serveur Flask en fond
+docker exec -e FLASK_APP=/root/hello.py -d Abathur flask run -h 0.0.0.0 -p 3000
+
+#page html accecible via un curl ou bien en utilisant un navigateur
+curl $(docker-machine ip Char):3000
